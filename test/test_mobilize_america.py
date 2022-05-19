@@ -2,13 +2,17 @@ import unittest
 import requests_mock
 from parsons import MobilizeAmerica
 from test.utils import validate_list
+from unittest.mock import patch
+import os
 
 
 class TestMobilizeAmerica(unittest.TestCase):
 
     def setUp(self):
+        self.MOBILIZE_AMERICA_API_KEY = "1234"
 
-        self.ma = MobilizeAmerica()
+        with patch.dict(os.environ, {"MOBILIZE_AMERICA_API_KEY": self.MOBILIZE_AMERICA_API_KEY}):
+            self.ma = MobilizeAmerica()
 
     def tearDown(self):
 
@@ -151,3 +155,282 @@ class TestMobilizeAmerica(unittest.TestCase):
 
         # Assert response is expected structure
         self.assertTrue(validate_list(['id', 'deleted_date'], self.ma.get_events_deleted()))
+
+    @requests_mock.Mocker()
+    def test_get_attendances(self, m):
+
+        json = {'count': 3859,
+                'data': [{'attended': True,
+                    'created_date': 1641253458,
+                    'custom_signup_field_values': [],
+                    'event': {'accessibility_notes': None,
+                        'accessibility_status': 'NOT_SURE',
+                        'address_visibility': 'PUBLIC',
+                        'approval_status': 'APPROVED',
+                        'browser_url': 'https://www.mobilize.us/mvp/event/434841/',
+                        'contact': {'email_address': 'event1host@gmail.com',
+                            'name': 'Best Host',
+                            'owner_user_id': 111,
+                            'phone_number': '2121112222'},
+                        'created_by_volunteer_host': True,
+                        'created_date': 1641166823,
+                        'description': 'You are Invited to Defy the Odds and help '
+                        'the Democrats Hold their House and Senate '
+                        'Majority.\n'
+                        '\n'
+                        'Learn about Movement Voter Project (MVP). '
+                        'MVP is your trusted source to move 100% '
+                        'of your donations to the most effective '
+                        'grassroots organizations getting out the '
+                        'vote in battleground Senate and House '
+                        'Races.\n'
+                        '\n'
+                        'Learn more here:\n'
+                        'https://movement.vote',
+                        'event_campaign': None,
+                        'event_type': 'FUNDRAISER',
+                        'featured_image_url': 'https://mobilizeamerica.imgix.net/uploads/organization/Mobilize%20event%20image%20-%201200%20x%20630px%20-%20MVPAC_20211222234248902257.png',
+                        'high_priority': None,
+                        'id': 434841,
+                        'instructions': 'Thanks for signing up to learn about '
+                        'Movement Voter Project and how your '
+                        'support can help the Democrats Defy the '
+                        'Odds and hold the House and Senate. \n'
+                        '\n'
+                        'This will be a lively, interesting & '
+                        'informative Zoom call. Please consider '
+                        'inviting your friends.',
+                        'is_virtual': True,
+                        'location': {'address_lines': ['123 Main St', ''],
+                            'congressional_district': None,
+                            'country': 'US',
+                            'locality': 'Boulder',
+                            'location': {'latitude': 39.1111111,
+                                'longitude': -105.111111},
+                            'postal_code': '80302',
+                            'region': 'CO',
+                            'state_leg_district': None,
+                            'state_senate_district': None,
+                            'venue': ''},
+                        'modified_date': 1643853640,
+                        'sponsor': {'candidate_name': '',
+                                'created_date': 1579801969,
+                                'district': '',
+                                'event_feed_url': 'https://www.mobilize.us/mvp/',
+                                'id': 2311,
+                                'is_coordinated': False,
+                                'is_independent': True,
+                                'is_primary_campaign': False,
+                                'logo_url': 'https://mobilize-uploads-prod.s3.us-east-2.amazonaws.com/uploads/organization/MVP%20logo%20-%20with%20map%20-%20transparent%20bg%20-%20750x500_20211027200904507277.png',
+                                'modified_date': 1652881884,
+                                'name': 'Movement Voter Project',
+                                'org_type': 'C4',
+                                'race_type': None,
+                                'slug': 'mvp',
+                                'state': ''},
+                        'summary': '',
+                                 'tags': None,
+                                 'timeslots': None,
+                                 'timezone': 'America/Denver',
+                                 'title': '"Defy the Odds" Zoom House Party to hold the '
+                                          'majority in the House & Senate',
+                                 'virtual_action_url': None,
+                                 'visibility': 'PUBLIC'},
+                       'feedback': None,
+                       'id': 1111118,
+                       'modified_date': 1643765501,
+                       'person': {'blocked_date': None,
+                               'created_date': 1635365445,
+                               'email_addresses': [{'address': 'attendee1@gmail.com',
+                                   'primary': True}],
+                               'family_name': 'Guest',
+                               'given_name': 'Best',
+                               'id': 4837959,
+                               'modified_date': 1652396131,
+                               'person_id': 4444444,
+                               'phone_numbers': [{'number': None, 'primary': True}],
+                               'postal_addresses': [{'postal_code': None,
+                                   'primary': True}],
+                               'sms_opt_in_status': 'UNSPECIFIED',
+                               'user_id': 444444},
+                       'rating': None,
+                       'referrer': {'url': None,
+                               'utm_campaign': None,
+                               'utm_content': None,
+                               'utm_medium': None,
+                               'utm_source': None,
+                               'utm_term': None},
+                       'sponsor': {'candidate_name': '',
+                               'created_date': 1579801969,
+                               'district': '',
+                               'event_feed_url': 'https://www.mobilize.us/mvp/',
+                               'id': 2311,
+                               'is_coordinated': False,
+                               'is_independent': True,
+                               'is_primary_campaign': False,
+                               'logo_url': 'https://mobilize-uploads-prod.s3.us-east-2.amazonaws.com/uploads/organization/MVP%20logo%20-%20with%20map%20-%20transparent%20bg%20-%20750x500_20211027200904507277.png',
+                               'modified_date': 1652881884,
+                               'name': 'Movement Voter Project',
+                               'org_type': 'C4',
+                               'race_type': None,
+                               'slug': 'mvp',
+                               'state': ''},
+                       'status': 'CONFIRMED',
+                       'timeslot': {'end_date': 1643765400,
+                               'id': 33333,
+                               'instructions': None,
+                               'is_full': False,
+                               'start_date': 1643761800}}
+                       ],
+             'metadata': {'build_commit': '65c42a2049d6dcb46b8dc3cadf5aa4b359d32874',
+                     'page_title': None,
+                     'url_name': 'public_organization_attendances'},
+             'next': 'https://api.mobilize.us/v1/organizations/2311/attendances?cursor=cD0xODA2NTV3NA%3D%3D&updated_since=1577836800',
+             'previous': None}
+
+        next_json = {'count': 3859,
+                'data': [{'attended': True,
+                    'created_date': 1641424898,
+                    'custom_signup_field_values': [],
+                    'event': {'accessibility_notes': None,
+                        'accessibility_status': 'NOT_SURE',
+                        'address_visibility': 'PUBLIC',
+                        'approval_status': 'APPROVED',
+                        'browser_url': 'https://www.mobilize.us/mvp/event/434831/',
+                        'contact': {'email_address': 'event2host@gmail.com',
+                            'name': 'Great Host',
+                            'owner_user_id': 222333,
+                            'phone_number': '9179991177'},
+                        'created_by_volunteer_host': True,
+                        'created_date': 1641163355,
+                        'description': 'Support the best groups organizing to '
+                        'advocate for their communities, build '
+                        'lasting power, and win elections!\n'
+                        '\n'
+                        'Movement Voter PAC works to strengthen '
+                        'progressive power at all levels of '
+                        'government by helping donors – big and '
+                        'small – support the best and most '
+                        'promising local community-based '
+                        'organizations in key states, with a focus '
+                        'on youth and communities of color.\n'
+                        '\n'
+                        'We support hundreds of incredible '
+                        'organizations that both turn out unlikely '
+                        'voters and organize communities to grow '
+                        'their power and create transformation, '
+                        'from policy to the streets. We believe '
+                        'that supporting local movement vote '
+                        'groups is the most effective and most '
+                        'cost-effective strategy to transform our '
+                        'country.\n'
+                        '\n'
+                        '--\n'
+                        '\n'
+                        'Movement Voter PAC is a federal political '
+                        'committee that primarily supports the '
+                        'political work of local grassroots groups '
+                        'organizing to elect progressive '
+                        'candidates up and down the ballot.\n'
+                        '\n'
+                        'Learn more here:\n'
+                        'https://movement.vote',
+                        'event_campaign': None,
+                        'event_type': 'HOUSE_PARTY',
+                        'featured_image_url': 'https://mobilizeamerica.imgix.net/uploads/organization/Mobilize%20event%20image%20-%201200%20x%20630px%20-%20MVPAC_20211222234248902257.png',
+                        'high_priority': None,
+                        'id': 4343434,
+                        'instructions': '',
+                        'is_virtual': True,
+                        'location': {'address_lines': ['', ''],
+                                'congressional_district': None,
+                                'country': 'US',
+                                'locality': 'Ipswich',
+                                'location': {'latitude': 42.666666,
+                                    'longitude': -70.8888888},
+                                'postal_code': '01938',
+                                'region': 'MA',
+                                'state_leg_district': None,
+                                'state_senate_district': None,
+                                'venue': ''},
+                        'modified_date': 1645146344,
+                             'sponsor': {'candidate_name': '',
+                                     'created_date': 1579801969,
+                                     'district': '',
+                                     'event_feed_url': 'https://www.mobilize.us/mvp/',
+                                     'id': 2311,
+                                     'is_coordinated': False,
+                                     'is_independent': True,
+                                     'is_primary_campaign': False,
+                                     'logo_url': 'https://mobilize-uploads-prod.s3.us-east-2.amazonaws.com/uploads/organization/MVP%20logo%20-%20with%20map%20-%20transparent%20bg%20-%20750x500_20211027200904507277.png',
+                                     'modified_date': 1652881884,
+                                     'name': 'Movement Voter Project',
+                                     'org_type': 'C4',
+                                     'race_type': None,
+                                     'slug': 'mvp',
+                                     'state': ''},
+                             'summary': '',
+                             'tags': None,
+                             'timeslots': None,
+                             'timezone': 'America/New_York',
+                             'title': 'House Party for Movement Voter PAC',
+                             'virtual_action_url': None,
+                             'visibility': 'PUBLIC'},
+                   'feedback': 'Bravo!!!',
+                   'id': 1777777,
+                   'modified_date': 1645488034,
+                   'person': {'blocked_date': None,
+                           'created_date': 1635365445,
+                           'email_addresses': [{'address': 'attendee2@gmail.com',
+                               'primary': True}],
+                           'family_name': 'Guest',
+                           'given_name': 'Great',
+                           'id': 777777,
+                           'modified_date': 1652396131,
+                           'person_id': 888888,
+                           'phone_numbers': [{'number': None, 'primary': True}],
+                           'postal_addresses': [{'postal_code': None,
+                               'primary': True}],
+                           'sms_opt_in_status': 'UNSPECIFIED',
+                           'user_id': 444444},
+                   'rating': 'Positive',
+                   'referrer': {'url': 'https://www.google.com/',
+                           'utm_campaign': None,
+                           'utm_content': None,
+                           'utm_medium': None,
+                           'utm_source': None,
+                           'utm_term': None},
+                   'sponsor': {'candidate_name': '',
+                           'created_date': 1579801969,
+                           'district': '',
+                           'event_feed_url': 'https://www.mobilize.us/mvp/',
+                           'id': 2311,
+                           'is_coordinated': False,
+                           'is_independent': True,
+                           'is_primary_campaign': False,
+                           'logo_url': 'https://mobilize-uploads-prod.s3.us-east-2.amazonaws.com/uploads/organization/MVP%20logo%20-%20with%20map%20-%20transparent%20bg%20-%20750x500_20211027200904507277.png',
+                           'modified_date': 1652881884,
+                           'name': 'Movement Voter Project',
+                           'org_type': 'C4',
+                           'race_type': None,
+                           'slug': 'mvp',
+                           'state': ''},
+                   'status': 'CONFIRMED',
+                   'timeslot': {'end_date': 1645059600,
+                           'id': 3030303,
+                           'instructions': None,
+                           'is_full': False,
+                           'start_date': 1645056000}}
+                   ],
+         'metadata': {'build_commit': '65c42a2049d6dcb46b8dc3cadf5aa4b359d32874',
+                 'page_title': None,
+                 'url_name': 'public_organization_attendances'},
+         'next': '',
+         'previous': 'https://api.mobilize.us/v1/organizations/2311/attendances?cursor=cj0xJnA9MTywNjY1Nzk%3D&1577836800&updated_since=1577836800'}
+
+        m.get(self.ma.uri + 'organizations/2311/attendances', headers={"Authorization": "Bearer " + self.MOBILIZE_AMERICA_API_KEY}, json=json)
+        m.get(json["next"], request_headers={"Authorization": "Bearer " + self.MOBILIZE_AMERICA_API_KEY}, json=next_json)
+
+        expected = ['attended', 'created_date', 'custom_signup_field_values', 'event', 'feedback', 'id', 'modified_date', 'person', 'rating', 'referrer', 'sponsor', 'status', 'timeslot']
+        # Assert response is expected structure
+        self.assertTrue(validate_list(expected, self.ma.get_attendances(organization_id=2311, updated_since=1577836800)))
