@@ -96,11 +96,11 @@ class Bloomerang(object):
 
     def _base_create(self, endpoint, entity_id=None, **kwargs):
         return self.conn.post_request(url=self._base_endpoint(endpoint, entity_id),
-                                      json=json.dumps({**kwargs}))
+                                      json=kwargs)
 
     def _base_update(self, endpoint, entity_id=None, **kwargs):
         return self.conn.put_request(url=self._base_endpoint(endpoint, entity_id),
-                                     json=json.dumps({**kwargs}))
+                                     json=kwargs)
 
     def _base_get(self, endpoint, entity_id=None, params=None):
         return self.conn.get_request(url=self._base_endpoint(endpoint, entity_id), params=params)

@@ -4,6 +4,7 @@ import requests_mock
 from unittest import mock
 from test.utils import assert_matching_tables
 from parsons import Bloomerang, Table
+import simplejson
 
 from test.test_bloomerang.test_data import ENV_PARAMETERS, ID, TEST_DELETE, \
     TEST_CREATE_CONSTITUENT, TEST_GET_CONSTITUENT, TEST_GET_CONSTITUENTS, \
@@ -114,12 +115,14 @@ class TestBloomerang(unittest.TestCase):
     @requests_mock.Mocker()
     def test_create_interaction(self, m):
         m.post(f'{self.bloomerang.uri}interaction/', json=TEST_CREATE_INTERACTION)
-        self.assertEqual(self.bloomerang.create_interaction(), TEST_CREATE_INTERACTION)
+        self.assertEqual(self.bloomerang.create_interaction(Note="testing"), TEST_CREATE_INTERACTION)
+        self.assertEqual(m.last_request.text, simplejson.dumps({"Note": "testing"}))
 
     @requests_mock.Mocker()
     def test_update_interaction(self, m):
         m.put(f'{self.bloomerang.uri}interaction/{ID}/', json=TEST_CREATE_INTERACTION)
-        self.assertEqual(self.bloomerang.update_interaction(ID), TEST_CREATE_INTERACTION)
+        self.assertEqual(self.bloomerang.update_interaction(ID, Note="testing"), TEST_CREATE_INTERACTION)
+        self.assertEqual(m.last_request.text, simplejson.dumps({"Note": "testing"}))
 
     @requests_mock.Mocker()
     def test_get_interaction(self, m):
