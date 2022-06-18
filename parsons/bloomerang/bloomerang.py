@@ -130,6 +130,19 @@ class Bloomerang(object):
         """
         return self._base_update('constituent', entity_id=constituent_id, **kwargs)
 
+    def merge_constituent(self, **kwargs):
+        """
+        When merging, the database will look for a possible duplicate defined as a name plus one piece of contact info (address, email, or phone). If a duplicate is found, the data passed in will be merged into an existing constituent. If no duplicate is found, a new constituent will be created.
+
+        `Args:`
+            **kwargs:`
+                Fields to update, e.g., FirstName = 'RJ'.
+
+                See the Bloomerang API docs for a full list of `fields <https://bloomerang.co/product/integrations-data-management/api/rest-api/#/Constituents/post_constituent_merge>`_. # noqa
+        """
+        return self._base_create('constituent/merge', **kwargs)
+
+
     def get_constituent(self, constituent_id):
         """
         `Args:`
