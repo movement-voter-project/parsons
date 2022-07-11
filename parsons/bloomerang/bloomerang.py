@@ -318,16 +318,18 @@ class Bloomerang(object):
         """
         return self._base_delete('interaction', entity_id=interaction_id)
 
-    def get_interactions(self, page_number=1, page_size=50):
+    def get_interactions(self, page_number=1, page_size=50, **kwargs):
         """
         `Args:`
             page_number: int
                 Number of the page to fetch
             page_size: int
                 Number of records per page (maximum allowed is 50)
+            **kwargs:`
+                Parameters to filter search, e.g., channel = 'Email', purpose = 'Acknowledgement'.
         `Returns:`
             A  JSON of the entry or an error.
         """
-        params = self._base_pagination_params(page_number, page_size)
+        params = {**kwargs, **self._base_pagination_params(page_number, page_size)}
         response = self._base_get('interactions', params=params)
         return Table(response['Results'])
